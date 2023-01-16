@@ -1,0 +1,50 @@
+from machine import Pin
+import utime
+
+#les leds
+LR = Pin(0, Pin.OUT)
+LV = Pin(1, Pin.OUT)
+LB = Pin(2, Pin.OUT)
+#lzq booutons
+BP = Pin(3, Pin.IN)
+STOP = Pin(4, Pin.IN)
+val = 0
+
+def led_verte():
+    LV.value(0)
+    utime.sleep(1)
+    LB.value(1)
+    val = val + 1
+    
+def led_bleu():
+    LB.value(0)
+    utime.sleep(1)
+    LR.value(1)
+    val = val + 1
+
+def led_rouge():
+    LR.value(0)
+    utime.sleep(1)
+    LV.value(1)
+    val = 0
+    
+def reset():
+    LR.value(0)
+    LV.value(0)
+    LB.value(0)
+    val = 0
+
+while 1:
+    
+    if STOP.value() == False:
+        if BP.value() == True and val == 0:
+            led_verte() 
+            print(val)
+        elif BP.value() == True and val == 1:
+            led_bleu()
+            print(val)
+        elif BP.value() == True and val == 2:
+            led_rouge()
+            print(val)
+    else:
+        reset()
